@@ -1,0 +1,14 @@
+# Default
+coverage
+node_modules
+
+# Editor directories and files
+.idea
+
+# Nested Python server
+server/venv
+server/data
+server/.idea
+server/app/__pycache__
+server/app/routers/__pycache__
+
