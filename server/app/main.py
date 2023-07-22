@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import engine, Base
-from app.routers import todos
+from app.routers import todo, health_check
 
 app = FastAPI()
 
@@ -20,4 +20,5 @@ def startup():
     Base.metadata.create_all(engine)
 
 
-app.include_router(todos.router, prefix="/todo")
+app.include_router(todo.router, prefix="/todo")
+app.include_router(health_check.router, prefix="/health_check")

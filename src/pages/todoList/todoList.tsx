@@ -1,4 +1,12 @@
-import { Button, Checkbox, FormControlLabel, TextField, FormGroup, List, ListItem, IconButton } from '@mui/material';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import FormGroup from '@mui/material/FormGroup';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
     useCreateTodoMutation,
@@ -29,12 +37,8 @@ function TodoCard({ todo }: { todo: Todo }) {
         });
     };
 
-    if (deleteResponse.isLoading) {
-        return (
-            <ListItem>
-                <p>deleting todo</p>
-            </ListItem>
-        );
+    if (deleteResponse.isLoading || deleteResponse.isSuccess) {
+        return null;
     }
 
     return (
@@ -64,8 +68,8 @@ function CreateTodo() {
     };
 
     const submitTodo = () => {
-        setTitle('');
         createTodo({ todo: { title: title, complete: false } });
+        setTitle('');
     };
 
     if (createTodoResponse.isError) {
@@ -82,8 +86,12 @@ function CreateTodo() {
     );
 }
 
-function App() {
-    const { data, isError } = useGetTodosQuery();
+function TodoList() {
+    const { data, isLoading, isError } = useGetTodosQuery();
+
+    if (isLoading) {
+        return <p>loading...</p>;
+    }
 
     if (isError || !data) {
         return <p>failed to load todos</p>;
@@ -92,7 +100,9 @@ function App() {
     return (
         <div className="app">
             <div className="container">
-                <h1 className="text-center mb-4">Task List</h1>
+                <Typography variant="h4" component="h2">
+                    Task List
+                </Typography>
                 <CreateTodo />
                 <List dense={true}>
                     {data.todos.map((todo: Todo) => (
@@ -104,4 +114,4 @@ function App() {
     );
 }
 
-export default App;
+export default TodoList;

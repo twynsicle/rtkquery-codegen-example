@@ -1,21 +1,36 @@
-//TODO move generated version into codegen folder
-
 import { todoClientEndpoints } from './GENERATED_todoClientEndpoints.ts';
 
 export const enhancedTodoClient = todoClientEndpoints.enhanceEndpoints({
     addTagTypes: ['Todo'],
     endpoints: {
         getTodos: {
-            providesTags: ['Todo'],
+            providesTags: (response) => {
+                return response
+                    ? [...response.todos.map((todo) => ({ type: 'Todo' as const, id: todo.id })), 'Todo']
+                    : ['Todo'];
+            },
+            onQueryStarted: async (_, { queryFulfilled }) => {
+                console.log('onQueryStarted');
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log('onQueryStarted onSuccess', data);
+                } catch (err) {
+                    console.log('onQueryStarted failure');
+                }
+            },
         },
         createTodo: {
             invalidatesTags: ['Todo'],
         },
         updateTodo: {
-            invalidatesTags: ['Todo'],
+            invalidatesTags: (response) => {
+                return [{ type: 'Todo', id: response.id }];
+            },
         },
         deleteTodo: {
-            invalidatesTags: ['Todo'],
+            invalidatesTags: (_, __, args) => {
+                return [{ type: 'Todo', id: args.todoId }];
+            },
         },
     },
 });

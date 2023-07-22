@@ -9,3 +9,7 @@ class Todo(BaseModel):
 
 class Todos(BaseModel):
     todos: list[Todo]
+
+
+class HealthCheck(BaseModel):
+    status: str

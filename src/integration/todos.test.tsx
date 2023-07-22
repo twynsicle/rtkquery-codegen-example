@@ -18,7 +18,7 @@ const renderApp = async () => {
     await screen.findByText(TODO_1.title);
 };
 
-function buildGetTodoResponse(todos: Todo[]): GetTodosApiResponse {
+function buildGetTodosResponse(todos: Todo[]): GetTodosApiResponse {
     return {
         todos: todos,
     };
@@ -26,7 +26,7 @@ function buildGetTodoResponse(todos: Todo[]): GetTodosApiResponse {
 
 const todoHandlers = [
     rest.get(`${BASE_URL}/todo`, (_, result, context) => {
-        return result(context.json(buildGetTodoResponse([TODO_1])));
+        return result(context.json(buildGetTodosResponse([TODO_1])));
     }),
 ];
 
@@ -63,7 +63,7 @@ describe('todos', () => {
         server.use(rest.post(`${BASE_URL}/todo`, (_, result, context) => result.once(context.json({ TODO_2 }))));
         server.use(
             rest.get(`${BASE_URL}/todo`, (_, result, context) =>
-                result.once(context.json(buildGetTodoResponse([TODO_1, TODO_2]))),
+                result.once(context.json(buildGetTodosResponse([TODO_1, TODO_2]))),
             ),
         );
 
@@ -88,7 +88,7 @@ describe('todos', () => {
         );
         server.use(
             rest.get(`${BASE_URL}/todo`, (_, result, context) =>
-                result.once(context.json(buildGetTodoResponse([{ ...TODO_1, complete: true }]))),
+                result.once(context.json(buildGetTodosResponse([{ ...TODO_1, complete: true }]))),
             ),
         );
 
@@ -108,7 +108,7 @@ describe('todos', () => {
 
         server.use(rest.delete(`${BASE_URL}/todo/:todoId`, (_, result, context) => result.once(context.text(''))));
         server.use(
-            rest.get(`${BASE_URL}/todo`, (_, result, context) => result.once(context.json(buildGetTodoResponse([])))),
+            rest.get(`${BASE_URL}/todo`, (_, result, context) => result.once(context.json(buildGetTodosResponse([])))),
         );
 
         await user.click(
