@@ -8,8 +8,8 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "jest . --coverage",
-    "generate-client": "npx @rtk-query/codegen-openapi src/apiClients/codegen/todo-config.ts",
-    "generate-client-preprocess": "node src/apiClients/codegen/prepareSchema.mjs && npx @rtk-query/codegen-openapi src/apiClients/codegen/todo-config.ts"
+    "generate-client": "rtk-query-codegen-openapi src/apiClients/codegen/todo-config.ts",
+    "generate-client-preprocess": "node src/apiClients/codegen/prepareSchema.mjs && rtk-query-codegen-openapi src/apiClients/codegen/todo-config.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
